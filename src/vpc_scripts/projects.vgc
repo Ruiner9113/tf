@@ -28,10 +28,10 @@ $Project "fgdlib"
 
 $Project "game_shader_generic_example"
 {
-	"materialsystem\stdshaders\game_shader_generic_example_hl2mp.vpc" [$HL2MP && ($WIN32||$LINUX32)] // SDK_SP (see sdk_sp_branch.vpc)
-	"materialsystem\stdshaders\game_shader_generic_example_tf.vpc" [$TF && ($WIN32||$LINUX32)] // SDK_SP (see sdk_sp_branch.vpc)
-	"materialsystem\stdshaders\game_shader_generic_example_hl2.vpc" [$HL2 && ($WIN32||$LINUX32)] // SDK_SP (see sdk_sp_branch.vpc)
-	"materialsystem\stdshaders\game_shader_generic_example_episodic.vpc" [$EPISODIC && ($WIN32||$LINUX32)] // SDK_SP (see sdk_sp_branch.vpc)
+	"materialsystem\stdshaders\game_shader_generic_example_hl2mp.vpc" [$HL2MP && ($WIN64||$LINUX64)]
+	"materialsystem\stdshaders\game_shader_generic_example_tf.vpc" [$TF && ($WIN64||$LINUX64)]
+	"materialsystem\stdshaders\game_shader_generic_example_hl2.vpc" [$HL2 && ($WIN64||$LINUX64)]
+	"materialsystem\stdshaders\game_shader_generic_example_episodic.vpc" [$EPISODIC && ($WIN64||$LINUX64)]
 }
 
 // Use this project if you want to override all std shaders with your own.
