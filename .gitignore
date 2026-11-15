@@ -54,6 +54,7 @@ config.cfg
 # shader files
 *.tmp
 *.vcs
+*.inc
 
 # Unnecessary files
 *.lib
