@@ -312,6 +312,7 @@ public:
 	virtual bool SetItemContent( UGCUpdateHandle_t handle, const char *pszContentFolder ) = 0; // update item content from this local folder
 #ifdef SDK_MP
 	virtual bool SetItemPreview( UGCUpdateHandle_t handle, const char *pszPreviewFile ) = 0; //  change preview image file for this item. pszPreviewFile points to local image file, which must be under 1MB in size
+#ifdef SDK_MP
 	virtual bool SetAllowLegacyUpload( UGCUpdateHandle_t handle, bool bAllowLegacyUpload ) = 0; //  use legacy upload for a single small file. The parameter to SetItemContent() should either be a directory with one file or the full path to the file.  The file must also be less than 10MB in size.
 	virtual bool RemoveAllItemKeyValueTags( UGCUpdateHandle_t handle ) = 0; // remove all existing key-value tags (you can add new ones via the AddItemKeyValueTag function)
 	virtual bool RemoveItemKeyValueTags( UGCUpdateHandle_t handle, const char *pchKey ) = 0; // remove any existing key-value tags with the specified key
