@@ -532,3 +532,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+game/mod_tf/materials/vgui/logos/ui/spray.vmt
+game/mod_tf/cfg/user.scr
+game/mod_tf/maps/graphs/itemtest.ain
