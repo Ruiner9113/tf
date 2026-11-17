@@ -1,15 +1,18 @@
 "Patch"
 {
-	include "materials/models/player/shared/invun_base.vmt"
+	include "materials/models/player/shared/invun_custom2.vmt"
 	
 	insert
 	{
-//		"$bumpmap" "water/tfwater001_normal"
-//		"$normalmapalphaenvmapmask" 1
-//		"$basemapalphaphongmask" 0
+		"$bumpmap" "water/tfwater001_normal"
+		"$normalmapalphaenvmapmask" 1
+		"$basemapalphaphongmask" 0
 		
-		"$envmap" "models/player/shared/invun_custom"
-		
+		"$envmap" "models/player/shared/invun_base_custom"
+		"$detail"  "models/player/shared/invun_custom"
+		"$detailblendfactor" "0.75000000"
+
+
 		"$selfillum" "1"
 		$selfillumtint "[ 3 3 3 ]"
 		"$selfIllumFresnel" "1"

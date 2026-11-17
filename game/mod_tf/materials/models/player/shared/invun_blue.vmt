@@ -4,7 +4,8 @@
 	
 	insert
 	{
-		"$detail" "models/player/shared/invun_base_blue"
+		"$basetexture" "models/player/shared/invun_blue"
+                                 "$detail" "models/player/shared/invun_blue"
 		"$detailblendfactor" "0.75000000"
 		"$envmap" "models/player/shared/invun_blue"
 	}

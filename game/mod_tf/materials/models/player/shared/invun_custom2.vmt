@@ -1,0 +1,12 @@
+"Patch"
+{
+	include "materials/models/player/shared/invun_base.vmt"
+	
+	insert
+	{
+		"$basetexture" "models/player/shared/invun_base_custom"
+                                 "$detail" "models/player/shared/invun_mercenary"
+		"$detailblendfactor" "0.75000000"
+		"$envmap" "models/player/shared/invun_custom2"
+	}
+}

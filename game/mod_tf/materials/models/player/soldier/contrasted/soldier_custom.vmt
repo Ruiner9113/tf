@@ -1,0 +1,92 @@
+"Patch"
+{
+
+
+
+//The "include" command with the target of  "soldier_red.vmt"  is necessary for the Custom soldier texture to copy the detail of the default red/blu textures.
+               
+//Default for  $color2 is "93 72 117"              
+
+                include "materials/models/player/soldier/soldier_base.vmt"
+	
+	insert
+	{
+		"$baseTexture" "models/player/soldier/soldier_custom"
+		
+		"$blendtintbybasealpha"		"1"
+		//"$blendtintcoloroverbase"		"1"
+		"$colortint_base"		"{0 0 0}"
+                                "$color2" "{93 72 117}" // Chooses what color appears on the Custom Texture in Half-Life ModelViewer.
+		"$colortint_tmp"		"[0 0 0]"	
+		
+		"Proxies"
+		{
+			"ItemTintColor"
+			{
+				"resultVar"		"$colortint_tmp"
+			}
+			"SelectFirstIfNonZero"
+			{
+				"srcVar1"		"$colortint_tmp"
+				"srcVar2"		"$colortint_base"
+				"resultVar"		"$color2"
+			}
+		}
+	}
+                "VertexLitGeneric"
+                 {
+
+	"$bumpmap" "models/player/soldier/soldier_normal"
+	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
+	"$detailscale" "5"
+	"$detailblendfactor" 0.0
+	"$detailblendmode" 6
+
+	"$yellow" "0"
+	"$one" "1"
+
+
+	"$phong" "1"
+	"$phongexponent" "15" //25
+	"$phongboost" "1"	//.5
+	"$lightwarptexture" "models/player/pyro/pyro_lightwarp"
+	"$phongfresnelranges"	"[2 1 5]"
+	"$halflambert" "1"
+
+	// Rim lighting parameters
+	"$rimlight" "1"												// To enable rim lighting (requires phong)
+	"$rimlightexponent" "4"	//2									// Exponent for phong component of rim lighting	
+	"$rimlightboost" "2"										// Boost for ambient cube component of rim lighting
+
+	// Cloaking
+	"$cloakPassEnabled" "1"
+
+	"360?$color2" "[ 0.75 0.75 0.7 ]"
+
+	"Proxies"
+	{
+		"spy_invis"
+		{
+		}
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$detail"
+			"animatedtextureframenumvar" "$detailframe"
+			"animatedtextureframerate" 30
+		}
+		"BurnLevel"
+		{
+			"resultVar" "$detailblendfactor"
+		}
+		"YellowLevel"
+		{
+			"resultVar" "$yellow"
+		}
+		"Equals"
+		{
+			"srcVar1"  "$yellow"
+			"resultVar" "$color2"
+		}
+
+	}
+}
