@@ -8,6 +8,5 @@
 		"$compress"    "models/player/spy/hwm/spy_head_blue_compress"
 		"$stretch"     "models/player/spy/hwm/spy_head_blue_stretch"
 		"$bumpmap"     "models/player/shared/shared_normal"
-		"$rage" "1"
 	}
 }
