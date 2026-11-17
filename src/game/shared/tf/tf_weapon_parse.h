@@ -106,6 +106,11 @@ public:
 	char	m_szExplosionWaterEffect[128];
 
 	bool	m_bDontDrop;
+
+	// Mag
+	char    m_szMagModel[128];
+	int     m_iMagBodygroup;                // Body group of the magazine refer to the mag uneject function
+	bool    m_bDropsMag;
 };
 
 #endif // TF_WEAPON_PARSE_H

@@ -62,6 +62,7 @@
 #include "c_tf_player.h"
 #include "c_baseobject.h"
 #include "tf_gamerules.h"
+#include "physpropclientside.h"
 #endif
 
 // memdbgon must be the last include file in a .cpp file!!!
@@ -4257,8 +4258,234 @@ void MaterialFootstepSound( C_BaseAnimating *pEnt, bool bLeftFoot, float flVolum
 //-----------------------------------------------------------------------------
 void C_BaseAnimating::FireEvent( const Vector& origin, const QAngle& angles, int event, const char *options )
 {
+	Vector attachOrigin;
+	QAngle attachAngles; 
+
+#ifdef TF_CLIENT_DLL
+    CTFPlayer *pOwner = ToTFPlayer(this);
+    CTFWeaponBase *pGun = NULL;
+    const CTFWeaponInfo *pTFInfo = NULL;
+    if (pOwner)
+    {
+        pGun = pOwner->GetActiveTFWeapon();
+        if ( pGun )
+             pTFInfo = &pGun->GetTFWpnData();
+    }	
+#endif
+
 	switch( event )
 	{
+#ifdef TF_CLIENT_DLL		
+		case AE_CL_MAG_EJECT2:
+		case AE_CL_MAG_EJECT:
+		{
+			// create clientside physics based magazins during reload
+			// eject2 is for akimbo
+			if ( pOwner && pGun )
+			{
+				if ( pGun->GetTFWpnData().m_bDropsMag )
+				{
+					if ( event == AE_CL_MAG_EJECT )
+					{
+						int iModel = modelinfo->GetModelIndex( pTFInfo->m_szMagModel );
+
+						C_FadingPhysPropClientside *pEntity = new C_FadingPhysPropClientside();
+
+						if ( !pEntity )
+							return;
+
+						const model_t *model = modelinfo->GetModel( iModel );
+
+						if ( !model )
+						{
+							DevMsg( "AE_CL_MAG_EJECT: model index %i not found, physics object not created\n", iModel );
+							return;
+						}
+
+						int iAttachment = pGun->LookupAttachment( "mag_eject" );
+
+						Vector vecSrc;
+						QAngle vecAng;
+						pGun->GetAttachment( iAttachment, vecSrc, vecAng );
+							
+						pEntity->SetModelName( modelinfo->GetModelName( model ) );
+						pEntity->SetAbsOrigin( vecSrc );
+						pEntity->SetAbsAngles( vecAng );
+						pEntity->SetPhysicsMode( PHYSICS_MULTIPLAYER_CLIENTSIDE );
+						pEntity->AddEffects( EF_NOSHADOW );
+
+						if ( !pEntity->Initialize() )
+						{
+							pEntity->Release();
+							return;
+						}
+
+						IPhysicsObject *pPhysicsObject = pEntity->VPhysicsGetObject();
+
+						// fixme: this causes vphysics crashes as the mags get insane velocity! velocity code needs fixing and needs some sanity checks probably
+						/*
+						Vector vecDir;
+						Vector vecForceOrigin;
+
+						if ( pPhysicsObject )
+						{
+							// apply force to the physics object, relative to the player
+							Vector vecForce = vecDir;
+							Vector vecOffset = vecForceOrigin - pEntity->GetAbsOrigin();
+							pPhysicsObject->ApplyForceOffset( vecForce, vecOffset );
+						}
+						else
+						{
+							// failed to create a physics object
+							pEntity->Release();
+							return;
+						}
+						*/
+
+						if ( pPhysicsObject )
+						{
+						}
+						else 
+						{
+							// failed to create a physics object
+							pEntity->Release();
+							return;
+						}
+
+						pEntity->StartFadeOut( 5.0f );
+
+						/*
+						if ( !pOwner )
+							return;
+
+						pOwner->g_Mags.AddToTail( pEntity );
+
+						// Calculate the surplus
+						// maximum mag count per player is 2
+						int surplus = pOwner->g_Mags.Count() - 2;
+
+						if ( surplus <= 0 )
+							return;
+
+						int i;
+
+						C_FadingPhysPropClientside *pCandidate;
+						for ( i = 0; i < pOwner->g_Mags.Count() && surplus > 0; i++ )
+						{
+							pCandidate = pOwner->g_Mags[i];
+							Assert( !pCandidate->IsEffectActive( EF_NORECEIVESHADOW ) );
+
+							pOwner->g_Mags.Remove( i );
+
+							pCandidate->AddEffects( EF_NORECEIVESHADOW );
+
+							pCandidate->StartFadeOut( 0.1 );
+
+							surplus--;
+						}
+						*/
+					}
+					if ( event == AE_CL_MAG_EJECT2 )
+					{
+						int iModel = modelinfo->GetModelIndex( pTFInfo->m_szMagModel );
+
+						C_FadingPhysPropClientside *pEntity = new C_FadingPhysPropClientside();
+
+						if ( !pEntity )
+							return;
+
+						const model_t *model = modelinfo->GetModel( iModel );
+
+						if ( !model )
+						{
+							DevMsg( "AE_CL_MAG_EJECT: model index %i not found, physics object not created\n", iModel );
+							return;
+						}
+
+						int iAttachment = pGun->LookupAttachment( "mag_eject" );
+
+						Vector vecSrc;
+						QAngle vecAng;
+						pGun->GetAttachment( iAttachment, vecSrc, vecAng );
+							
+						pEntity->SetModelName( modelinfo->GetModelName( model ) );
+						pEntity->SetAbsOrigin( vecSrc );
+						pEntity->SetAbsAngles( vecAng );
+						pEntity->SetPhysicsMode( PHYSICS_MULTIPLAYER_CLIENTSIDE );
+						pEntity->AddEffects( EF_NOSHADOW );
+
+						if ( !pEntity->Initialize() )
+						{
+							pEntity->Release();
+							return;
+						}
+
+						IPhysicsObject *pPhysicsObject = pEntity->VPhysicsGetObject();
+
+						// fixme: this causes vphysics crashes as the mags get insane velocity! velocity code needs fixing and needs some sanity checks probably
+						/*
+						Vector vecDir;
+						Vector vecForceOrigin;
+
+						if ( pPhysicsObject )
+						{
+							// apply force to the physics object, relative to the player
+							Vector vecForce = vecDir;
+							Vector vecOffset = vecForceOrigin - pEntity->GetAbsOrigin();
+							pPhysicsObject->ApplyForceOffset( vecForce, vecOffset );
+						}
+						else
+						{
+							// failed to create a physics object
+							pEntity->Release();
+							return;
+						}
+						*/
+
+						if ( pPhysicsObject )
+						{
+						}
+						else 
+						{
+							// failed to create a physics object
+							pEntity->Release();
+							return;
+						}
+
+						if ( !pOwner )
+							return;
+
+						pOwner->g_Mags.AddToTail( pEntity );
+
+						// Calculate the surplus
+						// maximum mag count per player is 2
+						int surplus = pOwner->g_Mags.Count() - 2;
+
+						if ( surplus <= 0 )
+							return;
+
+						int i;
+
+						C_FadingPhysPropClientside *pCandidate;
+						for ( i = 0; i < pOwner->g_Mags.Count() && surplus > 0; i++ )
+						{
+							pCandidate = pOwner->g_Mags[i];
+							Assert( !pCandidate->IsEffectActive( EF_NORECEIVESHADOW ) );
+
+							pOwner->g_Mags.Remove( i );
+
+							pCandidate->AddEffects( EF_NORECEIVESHADOW );
+
+							pCandidate->StartFadeOut( 0.1 );
+
+							surplus--;
+						}
+					}
+				}
+			}
+		}
+		break;
+#endif
 	case AE_CL_CREATE_PARTICLE_EFFECT:
 		{
 			int iAttachment = -1;

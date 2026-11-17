@@ -27,6 +27,7 @@
 #include "tf_item_inventory.h"
 #include "c_tf_mvm_boss_progress_user.h"
 #include "c_te_legacytempents.h"
+#include "physpropclientside.h"
 
 
 class C_MuzzleFlashModel;
@@ -287,6 +288,9 @@ public:
 	void			ShowBirthdayEffect( bool bShow );
 
 	CUtlVector<EHANDLE>		*GetSpawnedGibs( void ) { return &m_hSpawnedGibs; }
+
+	// mag count
+	CUtlVector<C_FadingPhysPropClientside *> g_Mags;
 
 	bool			HasBombinomiconEffectOnDeath( void );
 

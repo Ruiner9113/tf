@@ -64,6 +64,10 @@ void CTFWeaponInfo::Parse( KeyValues *pKeyValuesData, const char *szWeaponName )
 
 	BaseClass::Parse( pKeyValuesData, szWeaponName );
 
+	m_bDropsMag = pKeyValuesData->GetBool("DropsMag");
+	Q_strncpy(m_szMagModel, pKeyValuesData->GetString("MagModel"), sizeof(m_szMagModel));
+	m_iMagBodygroup = pKeyValuesData->GetInt("magazine");
+
 	// Primary fire mode.
 	m_WeaponData[TF_WEAPON_PRIMARY_MODE].m_nDamage				= pKeyValuesData->GetInt( "Damage", 0 );
 	m_WeaponData[TF_WEAPON_PRIMARY_MODE].m_flRange				= pKeyValuesData->GetFloat( "Range", 8192.0f );
