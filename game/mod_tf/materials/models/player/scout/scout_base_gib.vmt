@@ -1,17 +1,15 @@
 "VertexLitGeneric"
 {
-     "$detail"            "materials\models\player\scout\scout_gib"
-    "$detailscale"       "1"       
-    "$detailblendfactor" "1.0"
-    "$detailblendmode"   "2"
+	"$bumpmap" "models/player/scout/scout_normal"
 
+	"$phongalbedotint" 1
 	"$phong" "1"
-	"$phongexponent" "15"
-	"$phongboost" "0.4"
+	"$phongexponent" "10"
+	"$phongboost" "5"	
 	"$lightwarptexture" "models/player/pyro/pyro_lightwarp"
-	"$phongfresnelranges"	"[.3 1 3]"
-	"$halflambert" "1"
-	"$basemapalphaphongmask" "1"
+	"$phongfresnelranges"	"[0.007 0.4 5]"
+	"$halflambert" "0"
+
 	// Rim lighting parameters
 	"$rimlight" "1"												// To enable rim lighting (requires phong)
 	"$rimlightexponent" "4"										// Exponent for phong component of rim lighting	
