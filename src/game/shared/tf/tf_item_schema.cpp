@@ -943,11 +943,6 @@ bool CTFItemDefinition::BInitFromKV( KeyValues *pKVItem, CUtlVector<CUtlString> 
 	const char *pszLoadoutSlot = pKVInitValues->GetString("item_slot", "");
 	if ( *pszLoadoutSlot )
 	{
-		if ( !V_strcmp( pszLoadoutSlot, "head" ) )
-		{
-			pszLoadoutSlot = "misc";
-		}
-
 		m_iDefaultLoadoutSlot = StringFieldToInt( pszLoadoutSlot, GetItemSchema()->GetLoadoutStrings( m_eEquipType ), true );
 		SCHEMA_INIT_CHECK(
 			m_iDefaultLoadoutSlot >= 0,
@@ -1552,7 +1547,7 @@ const char *g_szLoadoutStringsForDisplay[] =
 	"#LoadoutSlot_pda2",		// LOADOUT_POSITION_PDA2
 
 	// Wearables
-	"#LoadoutSlot_Misc",		// LOADOUT_POSITION_HEAD
+	"#LoadoutSlot_Head",		// LOADOUT_POSITION_HEAD
 	"#LoadoutSlot_Misc",		// LOADOUT_POSITION_MISC
 	"#LoadoutSlot_Action",		// LOADOUT_POSITION_ACTION
 	"#LoadoutSlot_Misc",		// LOADOUT_POSITION_MISC2
