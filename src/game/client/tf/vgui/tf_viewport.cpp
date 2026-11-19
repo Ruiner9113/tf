@@ -61,11 +61,7 @@
 #endif
 #include "clientmode_tf.h"
 #include "ienginevgui.h"
-#include "tf_hud_mainmenuoverride.h"
 #include "c_tf_objective_resource.h"
-
-#include "quest_log_panel.h"
-#include "tf_matchmaking_dashboard.h"
 
 //#include "tf_overview.h"
 
@@ -358,10 +354,6 @@ IViewPortPanel* TFViewport::CreatePanelByName(const char *szPanelName)
 	{
 		newpanel = new CTFGiveawayItemPanel( this );
 	}
-	else if ( Q_strcmp( PANEL_MAINMENUOVERRIDE, szPanelName ) == 0 )
-	{
-		newpanel = new CHudMainMenuOverride( this );
-	}
 	else
 	{
 		// create a generic base panel, don't add twice
@@ -383,13 +375,6 @@ void TFViewport::CreateDefaultPanels( void )
 	AddNewPanel( CreatePanelByName( PANEL_ARENA_TEAM ), "PANEL_ARENA_TEAM" );
 	AddNewPanel( CreatePanelByName( PANEL_PVE_WIN ), "PANEL_PVE_WIN" );
 	AddNewPanel( CreatePanelByName( PANEL_GIVEAWAY_ITEM ), "PANEL_GIVEAWAY_ITEM" );
-
-	CHudMainMenuOverride *pMMOverride = (CHudMainMenuOverride*)CreatePanelByName( PANEL_MAINMENUOVERRIDE );
-	if ( pMMOverride )
-	{
-		AddNewPanel( pMMOverride, "PANEL_MAINMENUOVERRIDE" );
-		pMMOverride->AttachToGameUI();	
-	}
 
 	BaseClass::CreateDefaultPanels();
 }
@@ -447,11 +432,6 @@ void TFViewport::OnScreenSizeChanged( int iOldWide, int iOldTall )
 			}
 		}
 	}
-
-	// The dashboard can't listen for this directly because it's parenting is all
-	// over the place.  Reset the dashboard so it get sized correctly.
-	GetDashboardPanel().RecreateAll();
-	GetMMDashboard()->Reload();
 }
 
 //-----------------------------------------------------------------------------

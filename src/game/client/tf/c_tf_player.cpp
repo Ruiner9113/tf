@@ -3868,7 +3868,6 @@ IMPLEMENT_CLIENTCLASS_DT( C_TFPlayer, DT_TFPlayer, CTFPlayer )
 	RecvPropFloat( RECVINFO( m_flHelpmeButtonPressTime ) ),
 	RecvPropInt( RECVINFO( m_iCampaignMedals ) ),
 	RecvPropInt( RECVINFO( m_iPlayerSkinOverride ) ),
-	RecvPropBool( RECVINFO( m_bViewingCYOAPDA ) ),
 	RecvPropBool( RECVINFO( m_bRegenerating ) ),
 	RecvPropEHandle( RECVINFO( m_hOffHandWeapon ) ),
 END_RECV_TABLE()
@@ -4047,7 +4046,6 @@ C_TFPlayer::C_TFPlayer() :
 	m_flInspectTime = 0.f;
 
 	m_flHelpmeButtonPressTime = 0.f;
-	m_bViewingCYOAPDA = false;
 	m_bRegenerating = false;
 
 	m_bNotifiedWeaponInspectThisLife = false;

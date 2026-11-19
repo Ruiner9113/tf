@@ -908,8 +908,6 @@ CTFPlayerShared::CTFPlayerShared()
 	m_flHolsterAnimTime = 0.f;
 	m_hSwitchTo = NULL;
 
-	m_iCYOAPDAAnimState = CYOA_PDA_ANIM_NONE;
-
 	// make sure we have all conditions in the list
 	m_ConditionData.EnsureCount( TF_COND_LAST );
 }
@@ -933,8 +931,6 @@ void CTFPlayerShared::Init( CTFPlayer *pPlayer )
 	m_bHasPasstimeBall = false;
 	m_bIsTargetedForPasstimePass = false;
 	m_askForBallTime = 0.0f;
-
-	m_iCYOAPDAAnimState = CYOA_PDA_ANIM_NONE;
 
 	m_bMotionCloak = false;
 
@@ -10794,9 +10790,6 @@ bool CTFPlayer::CanPlayerMove() const
 	if ( TFGameRules() && TFGameRules()->BInMatchStartCountdown() )
 		return false;
 
-	if ( IsViewingCYOAPDA() )
-		return false;
-
 	bool bFreezeOnRestart = tf_player_movement_restart_freeze.GetBool();
 	if ( bFreezeOnRestart )
 	{
@@ -11880,13 +11873,6 @@ bool CTFPlayer::Weapon_Switch( CBaseCombatWeapon *pWeapon, int viewmodelindex )
 		Weapon_SetLast( pPreviousLastWeapon );
 	}
 
-#ifdef GAME_DLL
-	if ( bSwitched && TFGameRules() && TFGameRules()->IsInTraining() && TFGameRules()->GetTrainingModeLogic() && IsFakeClient() == false)
-	{
-		TFGameRules()->GetTrainingModeLogic()->OnPlayerSwitchedWeapons( this );
-	}
-#endif
-
 #ifdef CLIENT_DLL
 	m_Shared.UpdateCritBoostEffect();
 #endif
@@ -12214,9 +12200,6 @@ bool CTFPlayer::CanAttack( int iCanAttackFlags )
 
 	Assert( pRules );
 
-	if ( IsViewingCYOAPDA() )
-		return false;
-
 	if ( m_Shared.HasPasstimeBall() ) 
 	{
 		// Always allow throwing the ball.
@@ -12490,23 +12473,6 @@ bool CTFPlayer::CanPickupBuilding( CBaseObject *pPickupObject )
 	}
 	else if ( nSqrDist > nPickUpRangeSq )
 		return false;
-
-	if ( TFGameRules()->IsInTraining() )
-	{
-		ConVarRef training_can_pickup_sentry( "training_can_pickup_sentry" );
-		ConVarRef training_can_pickup_dispenser( "training_can_pickup_dispenser" );
-		ConVarRef training_can_pickup_tele_entrance( "training_can_pickup_tele_entrance" );
-		ConVarRef training_can_pickup_tele_exit( "training_can_pickup_tele_exit" );
-		switch ( pPickupObject->GetType() )
-		{
-		case OBJ_DISPENSER:
-			return training_can_pickup_dispenser.GetBool();
-		case OBJ_TELEPORTER:
-			return pPickupObject->GetObjectMode() == MODE_TELEPORTER_ENTRANCE ? training_can_pickup_tele_entrance.GetBool() : training_can_pickup_tele_exit.GetBool();
-		case OBJ_SENTRYGUN:
-			return training_can_pickup_sentry.GetBool();
-		} // switch
-	}
 
 	return true;
 }
@@ -13141,9 +13107,6 @@ bool CTFPlayer::ShouldStopTaunting()
 {
 	// stop taunt if we're under water
 	if ( GetWaterLevel() > WL_Waist )
-		return true;
-
-	if ( IsViewingCYOAPDA() )
 		return true;
 
 	return false;

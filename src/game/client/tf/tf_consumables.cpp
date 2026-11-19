@@ -33,7 +33,6 @@
 #include "econ_notifications.h"
 #include "vgui/ISurface.h"
 #include "vgui/character_info_panel.h"
-#include "tf_hud_mainmenuoverride.h"
 #include "econ_ui.h"
 #include "backpack_panel.h"
 #include "store/v1/tf_store_page.h"
@@ -42,8 +41,6 @@
 #include "collection_crafting_panel.h"
 #include "clientmode_tf.h"
 #include "vgui_controls/AnimationController.h"
-#include "tf_matchmaking_dashboard_explanations.h"
-#include "tf_matchmaking_dashboard_parent_manager.h"
 #include "tf_shareddefs.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
@@ -706,7 +703,6 @@ public:
 		, m_nSourceItemID( pItem->GetID() )
 	{
 		TFModalStack()->PushModal( this );
-		GetMMDashboardParentManager()->AddPanel( this );
 
 		m_pIspectionPanel = new CTFItemInspectionPanel( this, "InspectionPanel" );
 		m_pIspectionPanel->SetOptions( false, true, true );
@@ -714,14 +710,12 @@ public:
 		if ( !tf_warpaint_explanation_viewed.GetBool() )
 		{
 			tf_warpaint_explanation_viewed.SetValue( true );
-			ShowDashboardExplanation( "WarPaintUse" );
 		}
 	}
 
 	virtual ~CTFPainkitConsumeDialog()
 	{
 		TFModalStack()->PopModal( this );
-		GetMMDashboardParentManager()->RemovePanel( this );
 	}
 
 	virtual void ApplySchemeSettings( IScheme *pScheme ) OVERRIDE
@@ -828,7 +822,7 @@ public:
 
 	virtual void SOCreated( const CSteamID & steamIDOwner, const GCSDK::CSharedObject *pObject, GCSDK::ESOCacheEvent eEvent ) OVERRIDE
 	{
-		if ( eEvent != eSOCacheEvent_Incremental)
+		if ( eEvent != GCSDK::eSOCacheEvent_Incremental)
 			return;
 
 		if ( pObject->GetTypeID() != CEconItem::k_nTypeID )
@@ -1495,11 +1489,6 @@ public:
 		if ( msg.BReadStr( &url ) )
 		{
 			steamapicontext->SteamFriends()->ActivateGameOverlayToWebPage( url.Get() );
-			IViewPortPanel *pMMOverride = ( gViewPortInterface->FindPanelByName( PANEL_MAINMENUOVERRIDE ) );
-			if ( pMMOverride )
-			{
-				((CHudMainMenuOverride*)pMMOverride)->UpdatePromotionalCodes();
-			}
 		}
 
 		return true;

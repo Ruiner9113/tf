@@ -171,7 +171,7 @@ void C_GameInstructor::Shutdown()
 //=========================================================
 void C_GameInstructor::UpdateHiddenByOtherElements()
 {
-	bool bHidden = Mod_HiddenByOtherElements();
+	bool bHidden = false;
 
 	if ( bHidden && !m_bHiddenDueToOtherElements )
 		StopAllLessons();
@@ -1283,7 +1283,7 @@ void C_GameInstructor::ReadLessonsFromFile( const char *pchFileName )
 			{
 				DefineLesson( new CScriptedIconLesson( m_pScriptKeys->GetName(), false, false ) );
 			}
-			else if (!Mod_DefineLessonType( m_pScriptKeys->GetName(), pszLessonType ))
+			else
 			{
 				Warning( "Lesson \"%s\" has unknown type \"%s\"\n", m_pScriptKeys->GetName(), pszLessonType );
 			}

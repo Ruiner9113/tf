@@ -197,36 +197,21 @@ void CHudTeamGoal::SetupGoalPanel( const char *pszGoal )
 	C_TFTeam *pLocalTeam = GetGlobalTFTeam( GetLocalPlayerTeam() );
 	if ( pLocalTeam )
 	{
-
-//=============================================================================
-// HPE_BEGIN:
-// [msmith]	If we're in training, we want to use a different icon here.
-//=============================================================================
-		if ( TFGameRules()->IsInTraining() )
+		int iRole = pLocalTeam->GetRole();
+		if ( iRole >= 0 && iRole < NUM_TEAM_ROLES )
 		{
-			m_pGoalImage->SetImage( "../hud/hud_icon_training" );
-		}
-//=============================================================================
-// HPE_END
-//=============================================================================
-		else
-		{
-			int iRole = pLocalTeam->GetRole();
-			if ( iRole >= 0 && iRole < NUM_TEAM_ROLES )
-			{
-				m_pGoalImage->SetImage( pszTeamRoleIcons[iRole] );
-
+			m_pGoalImage->SetImage( pszTeamRoleIcons[iRole] );
 				if ( m_pSwitchLabel )
+			{
+				if ( TFGameRules() && TFGameRules()->SwitchedTeamsThisRound() )
 				{
-					if ( TFGameRules() && TFGameRules()->SwitchedTeamsThisRound() )
-					{
-						m_pSwitchLabel->SetText( g_pVGuiLocalize->Find( pszTeamRoleSwitch[iRole] ) );
-						m_pSwitchLabel->SetVisible( true );
-					}
+					m_pSwitchLabel->SetText( g_pVGuiLocalize->Find( pszTeamRoleSwitch[iRole] ) );
+					m_pSwitchLabel->SetVisible( true );
 				}
 			}
 		}
 	}
+
 
 	if ( m_pGoalLabel && m_pSwitchLabel )
 	{

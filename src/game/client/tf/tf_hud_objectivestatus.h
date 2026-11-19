@@ -15,7 +15,6 @@
 #include "tf_imagepanel.h"
 #include "tf_hud_flagstatus.h"
 #include "tf_hud_escort.h"
-#include "tf_hud_training.h"
 #include "hud_controlpointicons.h"
 #include "GameEventListener.h"
 
@@ -40,21 +39,6 @@ public:
 
 	CControlPointProgressBar *GetControlPointProgressBar( void );
 
-	//=============================================================================
-	// HPE_BEGIN
-	// [msmith] Functions for training stuff.
-	//=============================================================================
-	void SetTrainingText( const char *msg);
-	void SetTrainingObjective (const char *obj);
-#ifdef MAPBASE
-	void SetTrainingImage (const char *img);
-	void SetTrainingGameInstructor (bool bIsInstructor);
-	void SetTrainingOverridePos (bool bOverride, float flX, float flY);
-#endif
-	//=============================================================================
-	// HPE_END
-	//=============================================================================
-
 private:
 
 	void	SetVisiblePanels( void );
@@ -71,15 +55,6 @@ private:
 	CTFHudMultipleEscort	*m_pMultipleEscortPanel;
 	class CTFHUDRobotDestruction	*m_pRobotDestructionPanel;
 	CTFHudPasstime			*m_pHudPasstime;
-	
-	//=============================================================================
-	// HPE_BEGIN:
-	// [msmith]	HUD for training stuff.
-	//=============================================================================
-	CTFHudTraining      *m_pTrainingPanel;
-	//=============================================================================
-	// HPE_END
-	//=============================================================================
 };
 
 #endif	// TF_HUD_OBJECTIVESTATUS_H

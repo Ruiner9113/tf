@@ -278,8 +278,6 @@ enum
 
 #define PANEL_GIVEAWAY_ITEM		"giveaway_item"
 
-#define PANEL_MAINMENUOVERRIDE	"MainMenuOverride"
-
 // file we'll save our list of viewed intro movies in
 #define MOVIES_FILE				"viewed.res"
 
@@ -418,7 +416,6 @@ enum
 	TF_HUDTYPE_CP,
 	TF_HUDTYPE_ESCORT,
 	TF_HUDTYPE_ARENA,
-	TF_HUDTYPE_TRAINING,
 
 	//
 	// ADD NEW ITEMS HERE TO AVOID BREAKING DEMOS

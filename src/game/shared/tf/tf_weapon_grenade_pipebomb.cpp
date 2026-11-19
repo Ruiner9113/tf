@@ -844,8 +844,6 @@ void CTFGrenadePipebombProjectile::PipebombTouch( CBaseEntity *pOther )
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-extern bool PropDynamic_CollidesWithGrenades( CBaseEntity* pBaseEntity );
-
 void CTFGrenadePipebombProjectile::VPhysicsCollision( int index, gamevcollisionevent_t *pEvent )
 {
 	BaseClass::VPhysicsCollision( index, pEvent );
@@ -863,40 +861,30 @@ void CTFGrenadePipebombProjectile::VPhysicsCollision( int index, gamevcollisione
 		return;
 	}
 
-	if ( m_iType == TF_GL_MODE_REGULAR || m_iType == TF_GL_MODE_CANNONBALL )
+	// Blow up if we hit an enemy we can damage
+	if ( pHitEntity->GetTeamNumber() && pHitEntity->GetTeamNumber() != GetTeamNumber() && pHitEntity->m_takedamage != DAMAGE_NO )
 	{
-		if ( PropDynamic_CollidesWithGrenades( pHitEntity) )
-		{
-			if ( m_bTouched == false )
-			{
-				SetThink( &CTFGrenadePipebombProjectile::Detonate );
-				SetNextThink( gpGlobals->curtime );
-			}
-		}
-		// Blow up if we hit an enemy we can damage
-		else if ( pHitEntity->GetTeamNumber() && pHitEntity->GetTeamNumber() != GetTeamNumber() && pHitEntity->m_takedamage != DAMAGE_NO )
-		{
-			SetThink( &CTFGrenadePipebombProjectile::Detonate );
-			SetNextThink( gpGlobals->curtime );
-		}
+		SetThink( &CTFGrenadePipebombProjectile::Detonate );
+		SetNextThink( gpGlobals->curtime );
+	}
 
-		if ( m_bTouched == false )
-		{
-			SetDamage( GetDamageScaleOnWorldContact() * GetDamage() );
+	if ( m_bTouched == false )
+	{
+		SetDamage( GetDamageScaleOnWorldContact() * GetDamage() );
 
-			int iNoBounce = 0;
-			if ( GetLauncher() )
+		int iNoBounce = 0;
+		if ( GetLauncher() )
+		{
+			CALL_ATTRIB_HOOK_INT_ON_OTHER( GetLauncher(), iNoBounce, grenade_no_bounce )
+			if ( iNoBounce )
 			{
-				CALL_ATTRIB_HOOK_INT_ON_OTHER( GetLauncher(), iNoBounce, grenade_no_bounce )
-				if ( iNoBounce )
-				{
-					Vector velocity;
-					AngularImpulse angularVelocity;
-					VPhysicsGetObject()->GetVelocity( &velocity, &angularVelocity );
-					velocity *= 0.1f;
-					VPhysicsGetObject()->SetVelocity( &velocity, &angularVelocity );
-				}
+				Vector velocity;
+				AngularImpulse angularVelocity;
+				VPhysicsGetObject()->GetVelocity( &velocity, &angularVelocity );
+				velocity *= 0.1f;
+				VPhysicsGetObject()->SetVelocity( &velocity, &angularVelocity );
 			}
+		
 		}
 		
 		m_bTouched = true;
@@ -918,8 +906,7 @@ void CTFGrenadePipebombProjectile::VPhysicsCollision( int index, gamevcollisione
 	// Temp: Don't stick to the saw blades in sawmill.
 	// We should make the saws their own entity type for networking.
 	if ( FStrEq( pHitEntity->m_iParent.ToCStr(), "sawmovelinear01" ) ||
-		 FStrEq( pHitEntity->m_iParent.ToCStr(), "sawmovelinear02" ) ||
-		  PropDynamic_CollidesWithGrenades( pHitEntity) )
+		 FStrEq( pHitEntity->m_iParent.ToCStr(), "sawmovelinear02" ) )
 	{
 		bIsDynamicProp = false;
 	}

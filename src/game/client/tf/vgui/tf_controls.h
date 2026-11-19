@@ -126,11 +126,7 @@ public:
 	}
 	virtual ~CMainMenuToolTip() {}
 
-	virtual void SetText(const char *text);
 	const char *GetText() { return NULL; }
-
-	virtual void HideTooltip();
-	virtual void PerformLayout();
 
 	void SetEmbeddedPanel( vgui::EditablePanel *pPanel )
 	{
@@ -450,15 +446,6 @@ private:
 
 	float m_flOffsetAngle = 0.f;
 };
-
-void CreateScrollingIndicator( int nXPos,
-							   int nYPos,
-							   const wchar* pwszText,
-							   const char* pszSoundName,
-							   float flDelay,
-							   int nXTravel,
-							   int nYTravel, 
-							   bool bPositive );
 
 // Helper to create a string that can blame users for some action.
 // Example: They don't have a Widget.

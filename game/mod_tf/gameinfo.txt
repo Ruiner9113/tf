@@ -1,6 +1,7 @@
 "GameInfo"
 {
 	game					"Frog Fortress 2"
+	gamelogo				"1"
 	type 					multiplayer_only
 	nomodels				1
 	nohimodel 				1

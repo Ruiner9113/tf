@@ -18,8 +18,6 @@ $Project
 			$Folder	"TF"
 			{
 				$File	"mapbase\tf\tf_hud_external_timer.cpp"
-				$File	"mapbase\c_tf_lesson.cpp"
-				$File	"mapbase\c_tf_lesson.h"
 			}
 		}
 	}

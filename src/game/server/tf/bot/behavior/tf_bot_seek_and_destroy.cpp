@@ -58,30 +58,20 @@ ActionResult< CTFBot >	CTFBotSeekAndDestroy::Update( CTFBot *me, float interval 
 		return Done( "Behavior duration elapsed" );
 	}
 
-	if ( TFGameRules()->IsInTraining() )
+	if ( me->IsCapturingPoint() )
 	{
-		// if the trainee has started capturing the point, assist them
-		if ( me->IsAnyPointBeingCaptured() )
+		return Done( "Keep capturing point I happened to stumble upon" );
+	}
+
+	if ( m_isPointLocked )
+	{
+		CTeamControlPoint *point = me->GetMyControlPoint();
+
+		if ( !IsPointLocked( me, point ) )
 		{
-			return Done( "Assist trainee in capturing the point" );
+			return Done( "The point just unlocked" );
 		}
 	}
-	else
-	{
-		if ( me->IsCapturingPoint() )
-		{
-			return Done( "Keep capturing point I happened to stumble upon" );
-		}
-
-		if ( m_isPointLocked )
-		{
-			CTeamControlPoint *point = me->GetMyControlPoint();
-
-			if ( !IsPointLocked( me, point ) )
-			{
-				return Done( "The point just unlocked" );
-			}
-		}
 		
 		// Added proper fix to the bot offense push time bug that causes seek and destroy to never happen
 		// Basically just check for these gamemodes and otherwise allow seek and destroy at all times
@@ -92,7 +82,7 @@ ActionResult< CTFBot >	CTFBotSeekAndDestroy::Update( CTFBot *me, float interval 
 				return Done("Time to push for the objective");
 			}
 		}
-	}
+	
 
 	const CKnownEntity *threat = me->GetVisionInterface()->GetPrimaryKnownThreat();
 	if ( threat )

@@ -10,14 +10,12 @@
 #include "tf_mapinfo.h"
 #include "tf_comp_stats.h"
 #include "vgui/ISystem.h"
-#include "tf_streams.h"
 #include "tf_item_inventory.h"
 #include "vgui_avatarimage.h"
 #include "tf_badge_panel.h"
 #include "tf_ladder_data.h"
 #include "tf_match_description.h"
 #include "tf_rating_data.h"
-#include "tf_matchmaking_dashboard.h"
 
 #include "tf_gc_client.h"
 #include "tf_partyclient.h"
@@ -408,7 +406,6 @@ bool CLadderLobbyLeaderboard::UpdateLeaderboards()
 
 			pRankImage->SetMouseInputEnabled( true );
 			pRankImage->SetVisible( true );
-			pRankImage->SetTooltip( GetDashboardTooltip( k_eMediumFont ), szLocalized );
 		}
 
 		CExImageButton *pStreamImage = dynamic_cast< CExImageButton* >( pContainer->FindChildByName( "StreamImageButton" ) );
